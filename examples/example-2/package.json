@@ -1,0 +1,11 @@
+{
+  "name": "example-2",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "lodash.omit": "^4.5.0"
+  }
+}
