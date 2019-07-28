@@ -4,5 +4,8 @@
   "private": true,
   "scripts": {
     "test": "node test.js"
+  },
+  "dependencies": {
+    "lodash.omit": "^4.5.0"
   }
 }

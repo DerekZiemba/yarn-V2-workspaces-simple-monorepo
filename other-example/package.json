@@ -5,5 +5,8 @@
   "scripts": {
     "start": "node server.js",
     "test": "echo \"Other Example\""
+  },
+  "dependencies": {
+    "lodash.omit": "^4.5.0"
   }
 }
