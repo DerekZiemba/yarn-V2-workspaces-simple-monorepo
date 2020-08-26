@@ -2,31 +2,13 @@
   "name": "yarn-workspaces-simple-monorepo",
   "description": "Yarn Workspaces basic monorepo management without Lerna (for coding examples)",
   "private": true,
-  "scripts": {
-    "test": "yarn workspaces run test",
-    "lint": "xo .",
-    "format": "xo . --fix"
-  },
-  "devDependencies": {
-    "xo": "latest"
-  },
-  "xo": {
-    "prettier": true,
-    "space": true,
-    "globals": []
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/HugoDF/yarn-workspaces-simple-monorepo.git"
-  },
-  "author": "Hugo Di Francesco",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/HugoDF/yarn-workspaces-simple-monorepo/issues"
-  },
-  "homepage": "https://github.com/HugoDF/yarn-workspaces-simple-monorepo#readme",
   "workspaces": [
     "examples/*",
-    "other-example"
-  ]
+    "other-example",
+    "packages/*"
+  ],
+  "dependencies": {
+    "tslib": "^2.0.1"
+  },
+  "version": "0.0.0"
 }
