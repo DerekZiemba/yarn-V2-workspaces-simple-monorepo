@@ -1,5 +1,6 @@
-### Forked from https://github.com/HugoDF/yarn-workspaces-simple-monorepo
-### And mixed in typescript from https://github.com/benawad/typescript-yarn-workspace-example
+**This is forked from: https://github.com/HugoDF/yarn-workspaces-simple-monorepo  
+With typescript mixed in from: https://github.com/benawad/typescript-yarn-workspace-example  
+Then I made the workspaces reference/import one another - something that was otherwise lacking in the examples.**  
 
 Was assessing if it'd be worthwhile to use yarn over npm.  
 I ran into a dealbreaker with yarn classic, then tried upgrading to V2.   
