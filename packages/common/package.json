@@ -4,11 +4,10 @@
   "main": "src/common.ts",
   "license": "MIT",
   "dependencies": {
-    "example-1": "*"
+    "example-1": "file:../../examples/example-1"
   },
   "scripts": {
     "build": "tsc",
-    "build:watch": "tsc --watch",
-    "test": "tsc"
+    "build:watch": "tsc --watch"
   }
 }

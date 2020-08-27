@@ -4,14 +4,13 @@
   "main": "src/server.ts",
   "license": "MIT",
   "dependencies": {
-    "@test/common": "*",
-    "example-1": "*",
-    "example-2": "*",
-    "other-example": "*"
+    "@test/common": "file:../common",
+    "example-1": "file:../../examples/example-1",
+    "example-2": "file:../../examples/example-2",
+    "other-example": "file:../../other-example"
   },
   "scripts": {
     "start": "ts-node src/server.ts",
-    "build": "tsc",
-    "test": "ts-node src/server.ts"
+    "build": "tsc"
   }
 }

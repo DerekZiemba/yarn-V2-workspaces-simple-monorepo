@@ -5,12 +5,11 @@
   "private": true,
   "scripts": {
     "start": "node other.js",
-    "test": "echo \"Other Example\"",
-    "build": "cd ."
+    "test": "echo \"Other Example\""
   },
   "dependencies": {
-    "example-1": "*",
-    "example-2": "*",
+    "example-1": "file:../examples/example-1",
+    "example-2": "file:../examples/example-2",
     "lodash.omit": "^4.5.0"
   }
 }

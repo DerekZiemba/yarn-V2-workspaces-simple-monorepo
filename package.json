@@ -1,15 +1,18 @@
 {
   "name": "yarn-workspaces-simple-monorepo",
   "description": "Yarn Workspaces basic monorepo management without Lerna (for coding examples)",
+  "version": "0.0.1",
   "private": true,
+  "npmClient": "yarn",
+  "useWorkspaces": true,
   "workspaces": [
     "examples/*",
     "other-example",
     "packages/*"
   ],
-  "version": "0.0.1",
   "devDependencies": {
     "@types/node": "^14.6.0",
+    "lerna": "^3.22.1",
     "pnp-webpack-plugin": "^1.6.4",
     "ts-node": "^9.0.0",
     "tslib": "^2.0.1",

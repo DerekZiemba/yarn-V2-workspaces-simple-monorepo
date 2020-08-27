@@ -4,11 +4,10 @@
   "main": "test.js",
   "private": true,
   "scripts": {
-    "test": "node test.js",
-    "build": "cd ."
+    "test": "node test.js"
   },
   "dependencies": {
-    "example-1": "*",
+    "example-1": "file:../example-1",
     "lodash.omit": "^4.5.0"
   }
 }
