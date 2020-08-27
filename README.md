@@ -72,7 +72,7 @@ I think I was better off on Classic. Classic way simplier and pretty much worked
 I cant build or run anything in V2:  
 |   |   |   |
 |---|---|---|
-| Check workspace setup<br>* Note: It's not longer easily readable for humans  | `yarn workspaces list --json -v` | ![](https://i.imgur.com/hRVhKXi.png) |
+| Check workspace setup<br>* Note: It's no longer easily readable for humans  | `yarn workspaces list --json -v` | ![](https://i.imgur.com/hRVhKXi.png) |
 | **(BROKEN)** Run script command defined in package.json for a specific workspace<br> There's no longer an easy built in way to do this.<br> Be sure to install plugin `workspace-tools` | `yarn workspaces foreach -t run test`  | ![](https://i.imgur.com/jaVeYeO.png)  |
 
 -------------------
