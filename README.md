@@ -19,7 +19,7 @@ https://yarnpkg.com/getting-started/install
    2. Install webpack plugin (not useful in this repo, but I'll need it later)  
       `yarn add -D pnp-webpack-plugin`
 2. Install some plugins https://yarnpkg.com/api/modules/plugin_typescript.html  
-   Many of the documented commands come from these, and IMO it's easy to miss that these are addons due to the documentations color scheme
+   Many of the documented commands come from these, and IMO it's easy to miss that these are addons 
 
     ```bash
       yarn plugin import typescript           # I guess it's not batteries included like V1
