@@ -4,10 +4,10 @@
   "main": "src/server.ts",
   "license": "MIT",
   "dependencies": {
-    "@test/common": "1.0.0",
-    "example-1": "1.0.0",
-    "example-2": "1.0.0",
-    "other-example": "1.0.0"
+    "@test/common": "workspace:*",
+    "example-1": "workspace:*",
+    "example-2": "workspace:*",
+    "other-example": "workspace:*"
   },
   "scripts": {
     "start": "ts-node src/server.ts",
