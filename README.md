@@ -1,33 +1,63 @@
-Be sure to checkout branch `yarn2` for Yarn 2 implementation
 
-**This is forked from: https://github.com/HugoDF/yarn-workspaces-simple-monorepo  
-With typescript mixed in from: https://github.com/benawad/typescript-yarn-workspace-example  
-Then I made the workspaces reference/import one another - something that was otherwise lacking in the examples.**  
+**This is forked from: https://github.com/HugoDF/yarn-workspaces-simple-monorepo**  
+**With typescript mixed in from: https://github.com/benawad/typescript-yarn-workspace-example**  
 
-Was assessing if it'd be worthwhile to use yarn over npm.  
-I ran into a dealbreaker with yarn classic, then tried upgrading to V2.   
-Now I'm at another dealbreaker and am posting this repo for help.   
-
-- [Upgrade Process Notes](#upgrade-process-notes)
-  - [**V1** Yarn Classic](#v1-yarn-classic)
-  - [**V2** Yarn](#v2-yarn)
-- [**ORIGINAL README:** Yarn Workspaces basic monorepo management without Lerna (for coding examples)](#original-readme-yarn-workspaces-basic-monorepo-management-without-lerna-for-coding-examples)
-  - [Requirements](#requirements)
-  - [Setup](#setup)
-  - [npm scripts](#npm-scripts)
-  - [Guide](#guide)
-    - [Set up Yarn workspaces](#set-up-yarn-workspaces)
-    - [Bootstrapping the monorepo](#bootstrapping-the-monorepo)
-    - [Managing your monorepo with `yarn workspace` and `yarn workspaces` commands](#managing-your-monorepo-with-yarn-workspace-and-yarn-workspaces-commands)
-      - [Run commands in a single package](#run-commands-in-a-single-package)
-      - [Run commands in all packages](#run-commands-in-all-packages)
-  - [LICENSE](#license)
+- [Exploring Monorepo Options](#exploring-monorepo-options)
+  - [V1 Yarn Classic](#v1-yarn-classic)
+    - [Setup](#setup)
+    - [Samples of Commands](#samples-of-commands)
+  - [V2 Yarn](#v2-yarn)
+    - [Upgrade From Yarn Classic](#upgrade-from-yarn-classic)
+    - [Samples of Commands](#samples-of-commands-1)
+  - [Lerna with Yarn Classic (Actually Works!)](#lerna-with-yarn-classic-actually-works)
+    - [Setup](#setup-1)
+    - [Samples of Commands](#samples-of-commands-2)
 
 
-# Upgrade Process Notes
-It's not immediately obvious there is a V2, and it can only be used per project.  
-https://github.com/yarnpkg/berry/issues/1443#issuecomment-681167701  
+[**ORIGINAL README:** Yarn Workspaces basic monorepo management without Lerna (for coding examples)](./README.original.md)
 
+
+# Exploring Monorepo Options 
+The content below documents my struggle to investigate things such as:
+1. How does `yarn` compare with `npm`
+2. How to make Workspaces that reference/import one another
+3. Investigate how typescript and javascript workspaces interact
+4. How to run script commands on all workspaces at once, even if they some don't implement the script command in their workspace
+5. How using a common set of node_modules and version management work
+6. Evaluate how it works with webpack with special focus on chunking (todo) 
+7. Evaluate how those webpack chunks work with Electron packaging. Can it reduce code duplication in `electron-main`, `electron-renderer`, & `electron-preload`? (won't be done in this repo) 
+
+-------------------
+
+## V1 Yarn Classic 
+See git branch `classic`  
+
+Disqualified because script commands cannot be run on all workspaces at once. 
+
+### Setup
+1. Install Yarn https://classic.yarnpkg.com/en/docs/install/#windows-stable
+1. Make sure target repo is laid out similar to this repo, then simply run `yarn` 
+
+### Samples of Commands 
+|   |   |   |
+|---|---|---|
+| Check workspace setup                                               | `yarn workspaces info` | ![](https://i.imgur.com/7Am1zGb.png)  |
+| Run script command defined in package.json for a specific workspace | `yarn workspace @test/server run build`  |  |
+| Run test script defined in all workspace package.json's             | `yarn workspaces run test` | ![](https://i.imgur.com/aPinbE0.png)  |
+| Run build script defined in package.json's. **(There's a gotcha)**<br> * **There's no way to run a command for all workspaces if not defined in all package.jsons**<br>&nbsp;  [yarn workspaces foreach run build](https://next.yarnpkg.com/cli/workspaces/foreach) has not been implemented for Yarn Classic.<br>&nbsp; Not all workspaces require building, so some of the package.json do not have a build script.<br>&nbsp; The only reason this command works for packages that don't require building<br>&nbsp;&nbsp; is because I added a no-op command for those packages `"build": "cd ."`<br>&nbsp; Without the no-op command, yarn throws a `error Command "build" not found.`         | `yarn workspaces run build` |
+| Upgrade all packages to latest **(There's a gotcha)** <br> Can't use `yarn upgrade --latest` because it's been broken for monorepos since 2017,<br> &nbsp; see: https://github.com/yarnpkg/yarn/issues/4442            | `yarn upgrade-interactive --latest` |  |
+
+-------------------
+-------------------
+
+## V2 Yarn  
+See git branch `yarn2`  
+
+Disqualified because it's painful to use, buggy, lacking in features compared to yarn classic, and more difficult to integrate with webpack v4.  
+Classic way simplier and pretty much worked out of the box.  
+
+### Upgrade From Yarn Classic
+It's not immediately obvious there is a V2. At least by googling "yarn for windows"  
 The migration was super painful and way more complicated than expected.  Especially for such a simple sample repo.  
 https://yarnpkg.com/getting-started/install  
 
@@ -56,20 +86,8 @@ https://yarnpkg.com/getting-started/install
       yarn plugin import constraints          # Seems like it could be useful   https://yarnpkg.com/features/constraints
       yarn plugin import version              # also seems like could be useful https://yarnpkg.com/features/release-workflow
     ```
-## **V1** Yarn Classic 
-|   |   |   |
-|---|---|---|
-| Check workspace setup                                               | `yarn workspaces info` | ![](https://i.imgur.com/7Am1zGb.png)  |
-| Run script command defined in package.json for a specific workspace | `yarn workspace @test/server run build`  |  |
-| Run test script defined in all workspace package.json's             | `yarn workspaces run test` | ![](https://i.imgur.com/aPinbE0.png)  |
-| Run build script defined in package.json's. **(There's a gotcha)**<br> * **There's no way to run a command for all workspaces if not defined in all package.jsons**<br>&nbsp;  [yarn workspaces foreach run build](https://next.yarnpkg.com/cli/workspaces/foreach) has not been implemented for Yarn Classic.<br>&nbsp; Not all workspaces require building, so some of the package.json do not have a build script.<br>&nbsp; The only reason this command works for packages that don't require building<br>&nbsp;&nbsp; is because I added a no-op command for those packages `"build": "cd ."`<br>&nbsp; Without the no-op command, yarn throws a `error Command "build" not found.`         | `yarn workspaces run build` |
-| Upgrade all packages to latest **(There's a gotcha)** <br> Can't use `yarn upgrade --latest` because it's been broken for monorepos since 2017,<br> &nbsp; see: https://github.com/yarnpkg/yarn/issues/4442            | `yarn upgrade-interactive --latest` |  |
 
--------------------
--------------------
-## **V2** Yarn  
-I think I was better off on Classic. Classic way simplier and pretty much worked out of the box.  
-I cant build or run anything in V2:  
+### Samples of Commands
 |   |   |   |
 |---|---|---|
 | Check workspace setup<br>* Note: It's no longer easily readable for humans  | `yarn workspaces list --json -v` | ![](https://i.imgur.com/hRVhKXi.png) |
@@ -77,164 +95,42 @@ I cant build or run anything in V2:
 
 -------------------
 -------------------
--------------------
 
-# **ORIGINAL README:** Yarn Workspaces basic monorepo management without Lerna (for coding examples)
+## Lerna with Yarn Classic (Actually Works!)
+See git branch `lerna`
 
-Yarn workspaces give reasonable primitives to work with non-package (library/module) code (eg. application monorepo, coding examples monorepo).
+Since `yarn v2` is straight up broken and `yarn classic` doesn't quite have everything I need, I've reluctantly added another dependeny. 
 
-## Requirements
+### Setup
+1. From a `yarn classic` setup, delete: `./dist/`, `./node_modules/`, `./yarn.lock`
+2. Run `npm i -g lerna` <sup>(*Wow it must be big. Webpack doesn't even take this long.*)</sup>
+3. Run `lerna init --independent` then
+  * In [./lerna.json](./lerna.json) add workspaces from [./package.json](./package.json) to the "packages" array.  Should look like:
+    ```json
+     "npmClient": "yarn",
+     "useWorkspaces": true,
+     "packages": [
+       "examples/*",
+       "other-example",
+       "packages/*"
+     ],
+    ```
+  * **(BUGGED?)** In every workspaces `package.json`, change dependencies to relative paths prefixed with `file:`.  
+    * Example:  Change `"@test/common": "*"` to `"@test/common": "file:../common"`
+    * Issue was closed and resolved in 2018 without actually fixing it, instead they performed this workaround  
+      https://github.com/lerna/lerna/issues/1510#issuecomment-406833121
+      * If not done, bootstrapping will throw `error Package "example-1" refers to a non-existing file '"A:\\code\\nodejs\\#EXAMPLES\\example-1"'.`   
+        It doesn't make sense because `example-1` doesn't refer to any other workspaces.  
 
-- Node 10+
-- Yarn 1.x
+4. Run `lerna bootstrap --use-workspaces`
+5. From each workspaces package.json, you can remove the "no-op" script command workaround needed for classic yarn, such as `"build": "cd ."`
 
-## Setup
+### Samples of Commands
+|   |   |   |
+|---|---|---|
+| Check workspace setup                                               | `yarn workspaces info` | 
+| Run script command defined in package.json for a specific workspace | `yarn workspace @test/server run build`  |  
+| Run build script defined in some package.json's                     | `lerna run build` |  
+| Run test script defined in all workspace package.json's             | `lerna run test` |  
+| Upgrade all packages to latest <br> Can't use `yarn upgrade --latest` because it's been broken for monorepos since 2017,<br> &nbsp; see: https://github.com/yarnpkg/yarn/issues/4442  | `yarn upgrade-interactive --latest` |  
 
-1. Clone the repository
-2. Run `yarn` to install all required dependencies.
-
-## npm scripts
-
-- `yarn test` will run `test` script for each of the packages in the monorepo
-- `yarn lint` will lint all of the files with [xo](https://github.com/xojs/xo)
-- `yarn format` will run lint with `--fix` option on all the examples files (and tests).
-
-## Guide
-
-Pros of using workspaces: Yarn Workspaces are part of the standard Yarn toolchain (not downloading an extra dependency). It's very limited in scope, and de-dupes your installs (ie. makes them faster). This is perfect for managing code examples or a monorepo of applications.
-
-Cons of workspaces: If you're dealing with a monorepo of _packages_ (npm modules, libraries), Lerna provides tooling around publishing/testing only changed files.
-
-Note: Lerna and Yarn Workspaces are _in fact_ designed to work together, just use `"npmClient": "yarn"` in your `lerna.json`.
-
-### Set up Yarn workspaces
-
-```json
-{
-  "private": true,
-  "workspaces": [ "examples/*", "other-example"]
-}
-```
-
-**Note**: each of the workspaces (packages) need to have a package.json with a unique `name` and a valid `version`. The root package.json doesn't need to, it just needs to have `"private": true` and `"workspaces": []`.
-
-### Bootstrapping the monorepo
-
-Equivalent with Lerna would include a `lerna bootstrap`, which run `npm install` in all the packages.
-
-With workspaces since the dependencies are locked from root, you just need to do a `yarn` at the top-level.
-
-For workspaces to work, your "workspace" folders need to have a package.json that contain a `name` and `version`.
-
-### Managing your monorepo with `yarn workspace` and `yarn workspaces` commands
-
-#### Run commands in a single package
-
-To run commands in a single package in your monorepo, use the following syntax:
-
-```sh
-yarn workspace <package-name> <yarn-command>
-```
-
-For example:
-
-```sh
-$ yarn workspace example-1 run test
-
-yarn workspace v1.x.x
-yarn run v1.x.x
-$ node test.js
-test from example 1
-✨  Done in 0.23s.
-✨  Done in 0.86s.
-```
-
-or
-
-```sh
-$ yarn workspace example-2 remove lodash.omit
-
-yarn workspace v1.x.x
-yarn remove v1.x.x
-[1/2] 🗑  Removing module lodash.omit...
-[2/2] 🔨  Regenerating lockfile and installing missing dependencies...
-success Uninstalled packages.
-✨  Done in 2.83s.
-✨  Done in 3.58s.
-```
-
-
-"package-name" should be the value of found in the package.json under the `name` key.
-
-#### Run commands in all packages
-
-To run commands in every package in your monorepo, use the following syntax:
-
-```sh
-yarn workspaces <yarn-command>
-```
-
-For example:
-
-```sh
-$ yarn workspaces run test
-
-yarn workspaces v1.x.x
-yarn run v1.x.x
-$ node test.js
-test from example 1
-✨  Done in 0.22s.
-yarn run v1.x.x
-$ node test.js
-{ public: 'data' } 'Should not display "secret"'
-✨  Done in 0.23s.
-yarn run v1.x.x
-$ echo "Other Example"
-Other Example
-✨  Done in 0.11s.
-✨  Done in 2.15s.
-```
-
-or
-
-```sh
-$ yarn workspaces run add lodash.omit@latest
-
-yarn workspaces v1.x.x
-yarn add v1.x.x
-[1/4] 🔍  Resolving packages...
-[2/4] 🚚  Fetching packages...
-[3/4] 🔗  Linking dependencies...
-[4/4] 🔨  Building fresh packages...
-success Saved 1 new dependency.
-info Direct dependencies
-info All dependencies
-└─ lodash.omit@4.5.0
-✨  Done in 3.31s.
-yarn add v1.x.x
-[1/4] 🔍  Resolving packages...
-[2/4] 🚚  Fetching packages...
-[3/4] 🔗  Linking dependencies...
-[4/4] 🔨  Building fresh packages...
-success Saved 1 new dependency.
-info Direct dependencies
-info All dependencies
-└─ lodash.omit@4.5.0
-✨  Done in 2.76s.
-yarn add v1.x.x
-[1/4] 🔍  Resolving packages...
-[2/4] 🚚  Fetching packages...
-[3/4] 🔗  Linking dependencies...
-[4/4] 🔨  Building fresh packages...
-success Saved 1 new dependency.
-info Direct dependencies
-info All dependencies
-└─ lodash.omit@4.5.0
-✨  Done in 2.63s.
-✨  Done in 10.82s.
-
-```
-
-## LICENSE
-
-Code is licensed under the [MIT License](./LICENSE).
