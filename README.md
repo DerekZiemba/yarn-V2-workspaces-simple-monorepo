@@ -1,3 +1,5 @@
+Be sure to checkout branch `yarn2` for Yarn 2 implementation
+
 **This is forked from: https://github.com/HugoDF/yarn-workspaces-simple-monorepo  
 With typescript mixed in from: https://github.com/benawad/typescript-yarn-workspace-example  
 Then I made the workspaces reference/import one another - something that was otherwise lacking in the examples.**  
@@ -6,22 +8,41 @@ Was assessing if it'd be worthwhile to use yarn over npm.
 I ran into a dealbreaker with yarn classic, then tried upgrading to V2.   
 Now I'm at another dealbreaker and am posting this repo for help.   
 
-## Upgrade process
+- [Upgrade Process Notes](#upgrade-process-notes)
+  - [**V1** Yarn Classic](#v1-yarn-classic)
+  - [**V2** Yarn](#v2-yarn)
+- [**ORIGINAL README:** Yarn Workspaces basic monorepo management without Lerna (for coding examples)](#original-readme-yarn-workspaces-basic-monorepo-management-without-lerna-for-coding-examples)
+  - [Requirements](#requirements)
+  - [Setup](#setup)
+  - [npm scripts](#npm-scripts)
+  - [Guide](#guide)
+    - [Set up Yarn workspaces](#set-up-yarn-workspaces)
+    - [Bootstrapping the monorepo](#bootstrapping-the-monorepo)
+    - [Managing your monorepo with `yarn workspace` and `yarn workspaces` commands](#managing-your-monorepo-with-yarn-workspace-and-yarn-workspaces-commands)
+      - [Run commands in a single package](#run-commands-in-a-single-package)
+      - [Run commands in all packages](#run-commands-in-all-packages)
+  - [LICENSE](#license)
+
+
+# Upgrade Process Notes
 It's not immediately obvious there is a V2, and it can only be used per project.  
 https://github.com/yarnpkg/berry/issues/1443#issuecomment-681167701  
 
 The migration was super painful and way more complicated than expected.  Especially for such a simple sample repo.  
 https://yarnpkg.com/getting-started/install  
 
-1. First need to install the classic yarn as a global node module `npm install -g yarn`
-1. Then from the project root, run:  
+1. Delete all existing build files and yarn specific files: `./.dist/` & `./node_modules/` & `./yarn.lock`
+1. Install classic yarn as a global node module, even if yarn is installed globally via the yarn windows installer exe   
+   `npm install -g yarn`
+   * Ignore the fact that it says `v1.22.4` or similar
+2. From the project root, run:  
    `yarn set version berry && yarn set version latest && yarn install`
-1. Read about migrating version 2 here: https://yarnpkg.com/advanced/migration
+3. Read about migrating version 2 here: https://yarnpkg.com/advanced/migration
    1. Run the doctor to see if it offers up anything helpful  
       `yarn dlx @yarnpkg/doctor .`
    2. Install webpack plugin (not useful in this repo, but I'll need it later)  
       `yarn add -D pnp-webpack-plugin`
-2. Install some plugins https://yarnpkg.com/api/modules/plugin_typescript.html  
+4. Install some plugins https://yarnpkg.com/api/modules/plugin_typescript.html  
    Many of the documented commands come from these, and IMO it's easy to miss that these are addons 
 
     ```bash
@@ -35,60 +56,30 @@ https://yarnpkg.com/getting-started/install
       yarn plugin import constraints          # Seems like it could be useful   https://yarnpkg.com/features/constraints
       yarn plugin import version              # also seems like could be useful https://yarnpkg.com/features/release-workflow
     ```
+## **V1** Yarn Classic 
+|   |   |   |
+|---|---|---|
+| Check workspace setup                                               | `yarn workspaces info` | ![](https://i.imgur.com/7Am1zGb.png)  |
+| Run script command defined in package.json for a specific workspace | `yarn workspace @test/server run build`  |  |
+| Run test script defined in all workspace package.json's             | `yarn workspaces run test` | ![](https://i.imgur.com/aPinbE0.png)  |
+| Run build script defined in package.json's. **(There's a gotcha)**<br> * **There's no way to run a command for all workspaces if not defined in all package.jsons**<br>&nbsp;  [yarn workspaces foreach run build](https://next.yarnpkg.com/cli/workspaces/foreach) has not been implemented for Yarn Classic.<br>&nbsp; Not all workspaces require building, so some of the package.json do not have a build script.<br>&nbsp; The only reason this command works for packages that don't require building<br>&nbsp;&nbsp; is because I added a no-op command for those packages `"build": "cd ."`<br>&nbsp; Without the no-op command, yarn throws a `error Command "build" not found.`         | `yarn workspaces run build` |
+| Upgrade all packages to latest **(There's a gotcha)** <br> Can't use `yarn upgrade --latest` because it's been broken for monorepos since 2017,<br> &nbsp; see: https://github.com/yarnpkg/yarn/issues/4442            | `yarn upgrade-interactive --latest` |  |
 
-**Yarn Classic Scratchpad**:  
-  ```bash
-  yarn workspaces info
-  yarn workspaces run test
-  yarn workspace @test/server run build
+-------------------
+-------------------
+## **V2** Yarn  
+I think I was better off on Classic. Classic way simplier and pretty much worked out of the box.  
+I cant build or run anything in V2:  
+|   |   |   |
+|---|---|---|
+| Check workspace setup<br>* Note: It's no longer easily readable for humans  | `yarn workspaces list --json -v` | ![](https://i.imgur.com/hRVhKXi.png) |
+| **(BROKEN)** Run script command defined in package.json for a specific workspace<br> There's no longer an easy built in way to do this.<br> Be sure to install plugin `workspace-tools` | `yarn workspaces foreach -t run test`  | ![](https://i.imgur.com/jaVeYeO.png)  |
 
-  # fails because not every workspace has a build command
-  yarn workspaces run build
-  # Incorrectly thought this command was in Yarn Classic. None of this works
-  https://next.yarnpkg.com/cli/workspaces/foreach
-  yarn workspaces foreach -pitvA run test
-  yarn workspaces foreach -ptv run build
-  yarn workspaces foreach -pitvA run build
+-------------------
+-------------------
+-------------------
 
-  https://github.com/yarnpkg/yarn/issues/4442
-  yarn upgrade-interactive --latest
-
-  $ yarn add tslib -W
-  yarn add v1.22.4
-  error Running this command will add the dependency to the workspace root rather than the workspace itself, which might not be what you want - if you really meant it, make
-  it explicit by running this command again with the -W flag (or --ignore-workspace-root-check).
-  info Visit https://yarnpkg.com/en/docs/cli/add for documentation about this command.
-  ```
-
-**Yarn V2 Scratchpad**:  
-I think I was better off on V1.  V1 way simplier and pretty much worked out of the box. 
-  ```bash
-  $ yarn workspaces list --json -v
-{"location":".","name":"yarn-workspaces-simple-monorepo","workspaceDependencies":[],"mismatchedWorkspaceDependencies":[]}
-{"location":"examples/example-1","name":"example-1","workspaceDependencies":[],"mismatchedWorkspaceDependencies":[]}
-{"location":"examples/example-2","name":"example-2","workspaceDependencies":["examples/example-1"],"mismatchedWorkspaceDependencies":[]}
-{"location":"other-example","name":"other-example","workspaceDependencies":["examples/example-1","examples/example-2"],"mismatchedWorkspaceDependencies":[]}
-{"location":"packages/common","name":"@test/common","workspaceDependencies":["examples/example-1"],"mismatchedWorkspaceDependencies":[]}
-{"location":"packages/server","name":"@test/server","workspaceDependencies":["packages/common","examples/example-1","examples/example-2","other-example"],"mismatchedWorkspaceDependencies":[]}
-
-$ yarn workspaces foreach -t run build
-(node:3408) MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 uncaughtException listeners added to [process]. Use emitter.setMaxListeners() to increase limit
-➤ YN0000: src/common.ts:2:22 - error TS2307: Cannot find module 'example-1' or its corresponding type declarations.
-➤ YN0000:
-➤ YN0000: 2 import { echo } from 'example-1';
-➤ YN0000:                        ~~~~~~~~~~~
-➤ YN0000:
-➤ YN0000:
-➤ YN0000: Found 1 error.
-➤ YN0000:
-➤ YN0000: The command failed for workspaces that are depended upon by other workspaces; can't satisfy the dependency graph
-➤ YN0000: Failed with errors in 1.55s
-
-  ```
-
-
-
-# Yarn Workspaces basic monorepo management without Lerna (for coding examples)
+# **ORIGINAL README:** Yarn Workspaces basic monorepo management without Lerna (for coding examples)
 
 Yarn workspaces give reasonable primitives to work with non-package (library/module) code (eg. application monorepo, coding examples monorepo).
 
@@ -247,4 +238,3 @@ info All dependencies
 ## LICENSE
 
 Code is licensed under the [MIT License](./LICENSE).
-
