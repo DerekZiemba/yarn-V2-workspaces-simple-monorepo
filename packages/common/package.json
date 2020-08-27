@@ -4,7 +4,7 @@
   "main": "src/common.ts",
   "license": "MIT",
   "dependencies": {
-    "example-1": "workspace:*"
+    "example-1": "*"
   },
   "scripts": {
     "build": "tsc",

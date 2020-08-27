@@ -9,8 +9,8 @@
     "build": "cd ."
   },
   "dependencies": {
-    "example-1": "workspace:*",
-    "example-2": "workspace:*",
+    "example-1": "*",
+    "example-2": "*",
     "lodash.omit": "^4.5.0"
   }
 }
