@@ -1,12 +1,46 @@
+# First step is to install Yarn V2 as the Windows installer is V1.
+If not already, install Yarn Classic https://classic.yarnpkg.com/en/docs/install/#windows-stable
+
+It's not immediately obvious there is a V2, and it can only be used per project.
+https://github.com/yarnpkg/berry/issues/1443#issuecomment-681167701
+https://yarnpkg.com/getting-started/install
+
+1. First need to install the classic yarn as a global node module `yarn install -g yarn`
+1. Then from the project, run:
+   `yarn set version berry`
+   `yarn set version latest`
+
+
+
 # Yarn Workspaces basic monorepo management without Lerna (for coding examples)
 
 Yarn workspaces give reasonable primitives to work with non-package (library/module) code (eg. application monorepo, coding examples monorepo).
+
+yarn workspaces info
+yarn workspaces run test
+
+yarn workspace @cashew/server run build
+
+https://next.yarnpkg.com/cli/workspaces/foreach
+yarn workspaces foreach -pitvA run test
+yarn workspaces foreach -ptv run build
+yarn workspaces foreach -pitvA run build
+
+https://github.com/yarnpkg/yarn/issues/4442
+yarn upgrade-interactive --latest
+
+$ yarn add tslib -W
+yarn add v1.22.4
+error Running this command will add the dependency to the workspace root rather than the workspace itself, which might not be what you want - if you really meant it, make
+it explicit by running this command again with the -W flag (or --ignore-workspace-root-check).
+info Visit https://yarnpkg.com/en/docs/cli/add for documentation about this command.
+
 
 
 ## Requirements
 
 - Node 10+
-- Yarn 1.x 
+- Yarn 1.x
 
 ## Setup
 

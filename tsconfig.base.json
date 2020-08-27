@@ -1,0 +1,193 @@
+
+/* Move trailing comments to above properties:
+*  find:      (^\s+(?:\/\/\s)?".+?)\s+(\/\*\s.+\*\/)
+*  replace:   \t\t$2\n$1
+*/
+
+// https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
+// Run `tsc -p .` from source directory to compile
+{
+  /* Path to base configuration file to inherit from. Requires TypeScript version 2.1 or later */
+  // "extends": "",
+  /* Referenced projects. Requires TypeScript version 3.0 or later. */
+  // "references": [  ],
+
+  // "compileOnSave": false,
+
+  "compilerOptions": {
+    /* Stylize errors and messages using color and context (experimental) */
+    "pretty": true,
+    /* Skip type checking of declaration files. Requires TypeScript version 2.0 or later */
+    "skipLibCheck": true,
+    /* Allow modules imported with '.json' extension.  */
+    "resolveJsonModule": true,
+
+    // "watch": true,
+    /* Enable incremental compilation */
+    // "incremental": true,
+
+
+    /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'. */
+    "target": "ES2019",
+    /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
+    "moduleResolution": "node",
+    /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
+    // "module": "commonjs",
+    /* Specify emit/checking behavior for imports that are only used for types */
+    // "importsNotUsedAsValues": "preserve",
+    /* Specify library files to be included in the compilation.
+     * Default for target ES6: DOM,ES6,DOM.Iterable,ScriptHost */
+    // "lib": [],
+
+		/* Allow javascript files to be compiled. */
+    // "allowJs": true,
+		/* Report errors in .js files. */
+    // "checkJs": true,
+		/* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
+    // "jsx": "preserve",
+		/* Generates corresponding '.d.ts' file. */
+    "declaration": true,
+		/* Generates a sourcemap for each corresponding '.d.ts' file. */
+    // "declarationMap": true,
+		/* Generates corresponding '.map' file. */
+    // "sourceMap": true,
+    /* Emit a single file with source maps instead of having a separate file. */
+    "inlineSourceMap": true,
+		/* Emit the source alongside the sourcemaps within a single file; requires '--inlineSourceMap' or '--sourceMap' to be set. */
+    "inlineSources": true,
+		/* Concatenate and emit output to single file. */
+    // "outFile": "./",
+		/* Redirect output structure to the directory. */
+    // "outDir": "./out",
+		/* Enable project compilation */
+    // "composite": true,
+		/* Specify file to store incremental compilation information */
+    // "tsBuildInfoFile": "./.ts/tsconfig.tsbuildinfo",
+		/* Do not emit comments to output. */
+    // "removeComments": true,
+		/* Do not emit outputs. */
+    // "noEmit": true,
+		/* Import emit helpers from 'tslib'. */
+    "importHelpers": true,
+		/* Provide full support for iterables in 'for-of', spread, and destructuring when targeting 'ES5' or 'ES3'. */
+    "downlevelIteration": false,
+		/* Transpile each file as a separate module (similar to 'ts.transpileModule'). */
+    // "isolatedModules": false,
+		/* Specify the location where debugger should locate TypeScript files instead of source locations. */
+    // "sourceRoot": "src/",
+		/* Specify the location where debugger should locate map files instead of generated locations. */
+    // "mapRoot": "",
+
+    /* Strict Type-Checking Options */
+    /* Parse in strict mode and emit "use strict" for each source file. */
+    "alwaysStrict": true,
+		/* Enable all strict type-checking options. */
+    "strict": true,
+		/* Enable strict null checks. */
+    "strictNullChecks": true,
+		/* Enable strict checking of function types. */
+    "strictFunctionTypes": true,
+		/* Enable strict 'bind', 'call', and 'apply' methods on functions. */
+    "strictBindCallApply": true,
+		/* Enable strict checking of property initialization in classes. */
+    "strictPropertyInitialization": true,
+    /* Disable strict checking of generic signatures in function types */
+    "noStrictGenericChecks": false,
+
+    /* Code Quality and Additional Checks */
+		/* Raise error on expressions and declarations with an implied 'any' type. */
+    "noImplicitAny": false,
+    /* Suppress --noImplicitAny errors for indexing objects lacking index signatures. See typescript issue #1232 for more details.
+     * This allows for using objects as if they were a map, ie: var x = object['key'];
+     */
+    "suppressImplicitAnyIndexErrors": true,
+		/* Raise error on 'this' expressions with an implied 'any' type. */
+    "noImplicitThis": false,
+		/* Report errors on unused locals. */
+    "noUnusedLocals": false,
+		/* Report errors on unused parameters. */
+    "noUnusedParameters": true,
+		/* Report error when not all code paths in function return a value. */
+    "noImplicitReturns": true,
+		/* Report errors for fallthrough cases in switch statement. */
+    "noFallthroughCasesInSwitch": false,
+    /* Resolve 'keyof' to string valued property names only (no numbers or symbols). */
+    "keyofStringsOnly": true,
+    /* Do not report errors on unreachable code */
+    "allowUnreachableCode": true,
+    /* Do not report errors on unused labels. */
+    "allowUnusedLabels": false,
+    /* Emit class fields with ECMAScript-standard semantics.
+     * https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#the-usedefineforclassfields-flag-and-the-declare-property-modifier
+     */
+    "useDefineForClassFields": false,
+
+
+		/* Base directory to resolve non-absolute module names. */
+    // "baseUrl": "./",
+		/* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
+    // "paths": {
+    //   "*": [
+    //     "node_modules/*"
+    //   ]
+    // },
+		/* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
+    // "rootDir": "./",
+		/* List of root folders whose combined content represents the structure of the project at runtime. */
+    // "rootDirs": [],
+		/* List of folders to include type definitions from. */
+    // "typeRoots": [],
+		/* Type declaration files to be included in compilation. */
+    // "types": [],
+		/* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
+    "allowSyntheticDefaultImports": true,
+		/* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
+    "esModuleInterop": true,
+		/* Do not resolve the real path of symlinks. */
+    // "preserveSymlinks": true,
+		/* Allow accessing UMD globals from modules. */
+    "allowUmdGlobalAccess": true,
+
+    /* Experimental Options */
+		/* Enables experimental support for ES7 decorators. */
+    "experimentalDecorators": true,
+		/* Enables experimental support for emitting type metadata for decorators. */
+    "emitDecoratorMetadata": true,
+
+    /* Advanced Options */
+		/* Disallow inconsistently-cased references to the same file. */
+    "forceConsistentCasingInFileNames": true,
+  },
+  // "ts-node": {
+  //   "compiler": "typescript",
+  //   "compilerOptions": {
+
+  //   },
+  //   "compilerHost": false,
+  //   "emit": false,
+  //   "files": false,
+  //   "ignore": "./node_modules/",
+  //   "ignoreDiagnostics": [],
+  //   "logError": false,
+  //   "preferTsExts": true,
+  //   "pretty": false,
+  //   "scope": false,
+  //   "skipIgnore": false,
+  //   "transpileOnly": false,
+  //   "typeCheck": true
+  // },
+
+  // "files": ["global.d.ts"],
+
+  // "exclude": [
+
+  // ],
+  // "include": [
+
+  // ],
+  // "typeAcquisition": {
+  //   "enable": true,
+  //   "exclude": [],
+  //   "include": ['./shared_modules']
+  // },
+}

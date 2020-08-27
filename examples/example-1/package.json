@@ -1,9 +1,11 @@
 {
   "name": "example-1",
   "version": "1.0.0",
+  "main": "test.js",
   "private": true,
   "scripts": {
-    "test": "node test.js"
+    "test": "node test.js",
+    "build": "cd ."
   },
   "dependencies": {
     "lodash.omit": "^4.5.0"

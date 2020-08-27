@@ -1,12 +1,16 @@
 {
   "name": "other-example",
   "version": "1.0.0",
+  "main": "other.js",
   "private": true,
   "scripts": {
-    "start": "node server.js",
-    "test": "echo \"Other Example\""
+    "start": "node other.js",
+    "test": "echo \"Other Example\"",
+    "build": "cd ."
   },
   "dependencies": {
+    "example-1": "1.0.0",
+    "example-2": "1.0.0",
     "lodash.omit": "^4.5.0"
   }
 }
