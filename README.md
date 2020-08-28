@@ -5,12 +5,17 @@
 - [Exploring Monorepo Options](#exploring-monorepo-options)
   - [V1 Yarn Classic](#v1-yarn-classic)
     - [Setup](#setup)
+      - [Automated](#automated)
+      - [Manual](#manual)
     - [Samples of Commands](#samples-of-commands)
   - [V2 Yarn](#v2-yarn)
     - [Upgrade From Yarn Classic](#upgrade-from-yarn-classic)
     - [Samples of Commands](#samples-of-commands-1)
   - [Lerna with Yarn Classic (Actually Works!)](#lerna-with-yarn-classic-actually-works)
+    - [Migrate from Yarn Classic](#migrate-from-yarn-classic)
     - [Setup](#setup-1)
+      - [Automated](#automated-1)
+      - [Manual](#manual-1)
     - [Samples of Commands](#samples-of-commands-2)
 
 
@@ -35,6 +40,16 @@ See git branch `classic`
 Disqualified because script commands cannot be run on all workspaces at once. 
 
 ### Setup
+#### Automated
+The automated way also flattens the node_modules hierarchy and installs basic global dependencies like `yarn` itself.
+1. Run `node build/yarn-install-flat`.    
+   * This script automates `yarn install --flat --check-files --no-progress --non-interactive --ignore-optional`   
+     because yarn is buggy and the `--non-interactive` flag doesn't actually work.  
+    * So buggy in fact, that `--ignore-optional` is also ignored.  Be sure to remove `fsevents` from `package.json/resolutions` after running.   
+      If fsevents was there, you'll need to run the manual steps afterwards. 
+   * Automatically chooses latest package to use for you.  If you were to manually choose, it would take you forever.  
+  
+#### Manual
 1. Install Yarn https://classic.yarnpkg.com/en/docs/install/#windows-stable
 1. Make sure target repo is laid out similar to this repo, then simply run `yarn` 
 
@@ -101,10 +116,10 @@ See git branch `lerna`
 
 Since `yarn v2` is straight up broken and `yarn classic` doesn't quite have everything I need, I've reluctantly added another dependeny. 
 
-### Setup
+### Migrate from Yarn Classic
 1. From a `yarn classic` setup, delete: `./dist/`, `./node_modules/`, `./yarn.lock`
-2. Run `npm i -g lerna` <sup>(*Wow it must be big. Webpack doesn't even take this long.*)</sup>
-3. Run `lerna init --independent` then
+2. Run `npm i -g lerna` 
+3. Run `lerna init` then
   * In [./lerna.json](./lerna.json) add workspaces from [./package.json](./package.json) to the "packages" array.  Should look like:
     ```json
      "npmClient": "yarn",
@@ -124,6 +139,20 @@ Since `yarn v2` is straight up broken and `yarn classic` doesn't quite have ever
 
 4. Run `lerna bootstrap --use-workspaces`
 5. From each workspaces package.json, you can remove the "no-op" script command workaround needed for classic yarn, such as `"build": "cd ."`
+
+### Setup
+#### Automated
+The automated way also flattens the node_modules hierarchy and installs basic global dependencies like `yarn` itself.
+1. Run `node build/yarn-install-flat`.    
+   * This script automates `yarn install --flat --check-files --no-progress --non-interactive --ignore-optional`   
+     because yarn is buggy and the `--non-interactive` flag doesn't actually work.  
+    * So buggy in fact, that `--ignore-optional` is also ignored.  Be sure to remove `fsevents` from `package.json/resolutions` after running.   
+      If fsevents was there, you'll need to run the manual steps afterwards. 
+   * Automatically chooses latest package to use for you.  If you were to manually choose, it would take you forever.  
+  
+#### Manual
+1. Install Yarn https://classic.yarnpkg.com/en/docs/install/#windows-stable
+1. Make sure target repo is laid out similar to this repo, then simply run `lerna bootstrap` or `yarn`
 
 ### Samples of Commands
 |   |   |   |

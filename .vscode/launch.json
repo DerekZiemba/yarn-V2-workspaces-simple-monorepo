@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      /**
+      * Launches via ts-node which runs typescript directly and doesn't require compiling
+      * For this to work, must be using node version manager(NVM) and have both typescript and ts-node installed globally
+      *  https://github.com/TypeStrong/ts-node/issues/565
+      */
+      "name": "Debug: yarn-install-flat",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "args": ["${workspaceFolder}/build/yarn-install-flat", "--clean"],
+    }
+  ]
+}
