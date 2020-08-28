@@ -1,10 +1,11 @@
 {
+  "__documentation": "https://github.com/lerna/lerna#lernajson",
+  "version": "0.0.2",
   "npmClient": "yarn",
   "useWorkspaces": true,
   "packages": [
     "examples/*",
     "other-example",
     "packages/*"
-  ],
-  "version": "independent"
+  ]
 }

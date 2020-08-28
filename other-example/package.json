@@ -1,8 +1,7 @@
 {
   "name": "other-example",
-  "version": "1.0.0",
+  "version": "0.2.1",
   "main": "other.js",
-  "private": true,
   "scripts": {
     "start": "node other.js",
     "test": "echo \"Other Example\""

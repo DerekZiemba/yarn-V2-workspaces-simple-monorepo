@@ -1,6 +1,6 @@
 {
   "name": "@test/server",
-  "version": "1.0.0",
+  "version": "1.0.8",
   "main": "src/server.ts",
   "license": "MIT",
   "dependencies": {
@@ -11,6 +11,7 @@
   },
   "scripts": {
     "start": "ts-node src/server.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "ts-node src/server.ts"
   }
 }

@@ -1,8 +1,7 @@
 {
   "name": "example-2",
-  "version": "1.0.0",
+  "version": "0.1.3",
   "main": "test.js",
-  "private": true,
   "scripts": {
     "test": "node test.js"
   },
