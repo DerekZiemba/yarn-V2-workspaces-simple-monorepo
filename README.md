@@ -9,14 +9,18 @@
       - [Manual](#manual)
     - [Samples of Commands](#samples-of-commands)
   - [V2 Yarn](#v2-yarn)
-    - [Upgrade From Yarn Classic](#upgrade-from-yarn-classic)
-    - [Samples of Commands](#samples-of-commands-1)
-  - [Lerna with Yarn Classic (Actually Works!)](#lerna-with-yarn-classic-actually-works)
+    - [Yarn without PnP (Works!)](#yarn-without-pnp-works)
+      - [Setup](#setup-1)
+      - [Samples of Commands](#samples-of-commands-1)
+    - [Yarn with PnP](#yarn-with-pnp)
+      - [Setup](#setup-2)
+      - [Samples of Commands](#samples-of-commands-2)
+  - [Lerna with Yarn Classic (Works!)](#lerna-with-yarn-classic-works)
     - [Migrate from Yarn Classic](#migrate-from-yarn-classic)
-    - [Setup](#setup-1)
+    - [Setup](#setup-3)
       - [Automated](#automated-1)
       - [Manual](#manual-1)
-    - [Samples of Commands](#samples-of-commands-2)
+    - [Samples of Commands](#samples-of-commands-3)
 
 
 [**ORIGINAL README:** Yarn Workspaces basic monorepo management without Lerna (for coding examples)](./README.original.md)
@@ -67,31 +71,65 @@ The automated way also flattens the node_modules hierarchy and installs basic gl
 
 ## V2 Yarn  
 See git branch `yarn2`  
-
-Disqualified because it's painful to use, buggy, lacking in features compared to yarn classic, and more difficult to integrate with webpack v4.  
-Classic way simplier and pretty much worked out of the box.  
-
-### Upgrade From Yarn Classic
 It's not immediately obvious there is a V2. At least by googling "yarn for windows"  
-The migration was super painful and way more complicated than expected.  Especially for such a simple sample repo.  
+Classic is simplier and works out of the box. V2 requires more configuration.
+
 https://yarnpkg.com/getting-started/install  
 
+A Yarn dev @paul-soporan was kind enough to help me through this process! https://github.com/DerekZiemba/yarn-V2-workspaces-simple-monorepo/issues/1
+
+
+### Yarn without PnP (Works!)
+Recommended.  Things will be a lot easier
+#### Setup
+From the project root, run:  
+1. `npm install -g yarn`
+2. `yarn set version berry && yarn set version latest`
+3. `yarn config set nodeLinker "node-modules"`   
+   Makes working with existing tools much easier
+4. `yarn plugin import typescript`   
+   plugin-typescript automatically installs the corresponding @types/foo package for each foo package that you install that doesn't include it's own type definitions. 
+5. `yarn plugin import workspace-tools`  https://yarnpkg.com/cli/workspaces/foreach
+6. `yarn plugin import exec`   https://yarnpkg.com/cli/exec
+7. `yarn install`
+8. Optional:
+   1. Run the doctor to see if it offers up anything helpful  
+      `yarn dlx @yarnpkg/doctor .`
+
+#### Samples of Commands
+|   |   |
+|---|---|
+| Check workspace setup | `yarn workspaces list --json -v` | 
+| Verify workspace setup is healthy | `yarn dlx @yarnpkg/doctor .` | 
+| Build packages that require building | `yarn workspaces foreach -tvp run build` | 
+| Run test<br> *(Uses ts-node to run typescript so building isn't required)* | `yarn workspaces foreach -tv run test` | 
+| Run start for all workspaces | `yarn workspaces foreach -tv run start` | 
+| Run testapp | `yarn run start` | 
+
+-------------------
+
+### Yarn with PnP
+I've come to the conclusion it's too painful to use at this time. I never got it to work properly.  
+
+#### Setup
 1. Delete all existing build files and yarn specific files: `./.dist/` & `./node_modules/` & `./yarn.lock`
-1. Install classic yarn as a global node module, even if yarn is installed globally via the yarn windows installer exe   
+2. Install classic yarn as a global node module, even if yarn is installed globally via the yarn windows installer exe   
    `npm install -g yarn`
    * Ignore the fact that it says `v1.22.4` or similar
-2. From the project root, run:  
-   `yarn set version berry && yarn set version latest && yarn install`
-3. Read about migrating version 2 here: https://yarnpkg.com/advanced/migration
+3. From the project root, run:  
+   1. `yarn set version berry && yarn set version latest`
+   2. `yarn dlx @yarnpkg/pnpify --sdk vscode` for vscode support https://next.yarnpkg.com/advanced/editor-sdks#vscode
+   3. `yarn install` 
+4. Read about migrating version 2 here: https://yarnpkg.com/advanced/migration
    1. Run the doctor to see if it offers up anything helpful  
       `yarn dlx @yarnpkg/doctor .`
    2. Install webpack plugin (not useful in this repo, but I'll need it later)  
       `yarn add -D pnp-webpack-plugin`
-4. Install some plugins https://yarnpkg.com/api/modules/plugin_typescript.html  
+5. Install some plugins https://yarnpkg.com/api/modules/plugin_typescript.html  
    Many of the documented commands come from these, and IMO it's easy to miss that these are addons 
 
     ```bash
-      yarn plugin import typescript           # I guess it's not batteries included like V1
+      yarn plugin import typescript           
       yarn plugin import workspace-tools      # Adds `yarn workspace foreach` https://yarnpkg.com/cli/workspaces/foreach
       yarn plugin import exec                 #                               https://yarnpkg.com/cli/exec
       # adds `yarn upgrade-interactive`.  Needed because `yarn upgrade --latest` is broken for workspaces. 
@@ -102,7 +140,7 @@ https://yarnpkg.com/getting-started/install
       yarn plugin import version              # also seems like could be useful https://yarnpkg.com/features/release-workflow
     ```
 
-### Samples of Commands
+#### Samples of Commands
 |   |   |   |
 |---|---|---|
 | Check workspace setup<br>* Note: It's no longer easily readable for humans  | `yarn workspaces list --json -v` | ![](https://i.imgur.com/hRVhKXi.png) |
@@ -111,7 +149,7 @@ https://yarnpkg.com/getting-started/install
 -------------------
 -------------------
 
-## Lerna with Yarn Classic (Actually Works!)
+## Lerna with Yarn Classic (Works!)
 See git branch `lerna`
 
 Since `yarn v2` is straight up broken and `yarn classic` doesn't quite have everything I need, I've reluctantly added another dependeny. 
@@ -155,8 +193,8 @@ The automated way also flattens the node_modules hierarchy and installs basic gl
 1. Make sure target repo is laid out similar to this repo, then simply run `lerna bootstrap` or `yarn`
 
 ### Samples of Commands
-|   |   |   |
-|---|---|---|
+|   |   |
+|---|---|
 | Check workspace setup                                               | `yarn workspaces info` | 
 | Run script command defined in package.json for a specific workspace | `yarn workspace @test/server run build`  |  
 | Run build script defined in some package.json's                     | `lerna run build` |  
