@@ -1,14 +1,11 @@
 {
-  "name": "@test/common",
+  "name": "@packages/common",
   "version": "1.0.0",
-  "main": "src/common.ts",
-  "license": "MIT",
+  "main": ".dist/common.js",
   "dependencies": {
-    "example-1": "workspace:*"
+    "@example/example-1": "workspace:*"
   },
   "scripts": {
-    "build": "tsc",
-    "build:watch": "tsc --watch",
-    "test": "tsc"
+    "build": "tsc"
   }
 }

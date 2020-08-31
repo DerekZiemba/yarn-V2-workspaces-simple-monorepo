@@ -3,13 +3,13 @@
   "compilerOptions": {
     "module": "commonjs",
     "rootDir": "src",
-    "outDir": "../../.dist",
+    "outDir": ".dist",
     "baseUrl": ".",
     "paths": {
       "*": ["*", "../../node_modules/*"]
     },
   },
   "include": [
-    "./**/*"
+    "./src/**/*"
   ]
 }

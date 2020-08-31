@@ -2,9 +2,15 @@
   "name": "yarn-workspaces-simple-monorepo",
   "description": "Yarn Workspaces basic monorepo management without Lerna (for coding examples)",
   "private": true,
+  "main": "./app/index.ts",
+  "scripts": {
+    "build": "yarn workspaces foreach -tvp run build",
+    "test": "yarn workspaces foreach -tv run test",
+    "start": "node app/.dist/index.js"
+  },
   "workspaces": [
+    "app",
     "examples/*",
-    "other-example",
     "packages/*"
   ],
   "version": "0.0.1",

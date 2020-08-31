@@ -1,17 +1,15 @@
 {
-  "name": "@test/server",
+  "name": "@packages/server",
   "version": "1.0.0",
-  "main": "src/server.ts",
-  "license": "MIT",
+  "main": ".dist/server.js",
   "dependencies": {
-    "@test/common": "workspace:*",
-    "example-1": "workspace:*",
-    "example-2": "workspace:*",
-    "other-example": "workspace:*"
+    "@example/example-1": "workspace:*",
+    "@example/example-2": "workspace:*",
+    "@packages/common": "workspace:*"
   },
   "scripts": {
-    "start": "ts-node src/server.ts",
     "build": "tsc",
-    "test": "ts-node src/server.ts"
+    "test": "ts-node src/server.ts",
+    "start": "node .dist/server.js"
   }
 }

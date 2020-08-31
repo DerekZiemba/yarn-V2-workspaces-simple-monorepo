@@ -1,14 +1,13 @@
 {
-  "name": "example-2",
+  "name": "@example/example-2",
   "version": "1.0.0",
   "main": "test.js",
   "private": true,
   "scripts": {
-    "test": "node test.js",
-    "build": "cd ."
+    "test": "node test.js"
   },
   "dependencies": {
-    "example-1": "workspace:*",
+    "@example/example-1": "workspace:*",
     "lodash.omit": "^4.5.0"
   }
 }

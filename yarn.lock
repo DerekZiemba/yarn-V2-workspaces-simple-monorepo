@@ -3,31 +3,47 @@
 
 __metadata:
   version: 4
-  cacheKey: 5
+  cacheKey: 6
 
-"@test/common@workspace:*, @test/common@workspace:packages/common":
+"@example/example-1@workspace:*, @example/example-1@workspace:examples/example-1":
   version: 0.0.0-use.local
-  resolution: "@test/common@workspace:packages/common"
+  resolution: "@example/example-1@workspace:examples/example-1"
   dependencies:
-    example-1: "workspace:*"
+    lodash.omit: ^4.5.0
   languageName: unknown
   linkType: soft
 
-"@test/server@workspace:packages/server":
+"@example/example-2@workspace:*, @example/example-2@workspace:examples/example-2":
   version: 0.0.0-use.local
-  resolution: "@test/server@workspace:packages/server"
+  resolution: "@example/example-2@workspace:examples/example-2"
   dependencies:
-    "@test/common": "workspace:*"
-    example-1: "workspace:*"
-    example-2: "workspace:*"
-    other-example: "workspace:*"
+    "@example/example-1": "workspace:*"
+    lodash.omit: ^4.5.0
+  languageName: unknown
+  linkType: soft
+
+"@packages/common@workspace:*, @packages/common@workspace:packages/common":
+  version: 0.0.0-use.local
+  resolution: "@packages/common@workspace:packages/common"
+  dependencies:
+    "@example/example-1": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
+"@packages/server@workspace:*, @packages/server@workspace:packages/server":
+  version: 0.0.0-use.local
+  resolution: "@packages/server@workspace:packages/server"
+  dependencies:
+    "@example/example-1": "workspace:*"
+    "@example/example-2": "workspace:*"
+    "@packages/common": "workspace:*"
   languageName: unknown
   linkType: soft
 
 "@types/node@npm:^14.6.0":
-  version: 14.6.0
-  resolution: "@types/node@npm:14.6.0"
-  checksum: ff23553ab77516d0f90b6710a041a49723fc1b1ca33a5379d5746068cac8b9ddbec428d3a4913afaee50bcdc69b9583843740a18a3519ae997982694f5287c6b
+  version: 14.6.2
+  resolution: "@types/node@npm:14.6.2"
+  checksum: e88f4749fd95d7358a719dee27bb3c02aa7d93a69d95887b4baaeae3fcc21c65d8675e6a9633e499de22fa77651fc12188fd3657a6729dbce9e44a4fe5c0691b
   languageName: node
   linkType: hard
 
@@ -1178,18 +1194,25 @@ __metadata:
   linkType: hard
 
 "esrecurse@npm:^4.1.0":
-  version: 4.2.1
-  resolution: "esrecurse@npm:4.2.1"
+  version: 4.3.0
+  resolution: "esrecurse@npm:4.3.0"
   dependencies:
-    estraverse: ^4.1.0
-  checksum: 9acfa287729037ccb63ee725df2214b313fe1296a91f58fe42b151e1af0d51558ac18486e53f5717477ad9306f7a79d4e20fc7f8bac486d3175f86ab2dc67f73
+    estraverse: ^5.2.0
+  checksum: 2c96302dd5c4e6d07154d0ce6baee9e829ebf77e21c50c5ca4f24d6d0006fe4a4582364624a01f5667a3633b3e39bbce1a8191924f8419fb71584bb45bf7bb81
   languageName: node
   linkType: hard
 
-"estraverse@npm:^4.1.0, estraverse@npm:^4.1.1":
+"estraverse@npm:^4.1.1":
   version: 4.3.0
   resolution: "estraverse@npm:4.3.0"
   checksum: 1e4c627da9e9af07bf7b2817320f606841808fb2ec0cbd81097b30d5f90d8613288b3e523153babe04615d59b54ef876d98f0ca27488b6c0934dacd725a8d338
+  languageName: node
+  linkType: hard
+
+"estraverse@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "estraverse@npm:5.2.0"
+  checksum: 7dc1b027aebf937bab10c3254d9d73ed21672d7382518c9ddb9dc45560cb2f4e6548cc8ff1a07b7f431e94bd0fb0bf5da75b602e2473f966fea141c4c31b31d6
   languageName: node
   linkType: hard
 
@@ -1210,23 +1233,6 @@ __metadata:
   checksum: 529ceee780657a04e2b19ecbb685473f12aae05d5f9f794e36044f5ea602e1a0ba42bff4e1b7544a8a4164fbd9c585e69398b114f9925448d02c31c52c95cf26
   languageName: node
   linkType: hard
-
-"example-1@workspace:*, example-1@workspace:examples/example-1":
-  version: 0.0.0-use.local
-  resolution: "example-1@workspace:examples/example-1"
-  dependencies:
-    lodash.omit: ^4.5.0
-  languageName: unknown
-  linkType: soft
-
-"example-2@workspace:*, example-2@workspace:examples/example-2":
-  version: 0.0.0-use.local
-  resolution: "example-2@workspace:examples/example-2"
-  dependencies:
-    example-1: "workspace:*"
-    lodash.omit: ^4.5.0
-  languageName: unknown
-  linkType: soft
 
 "expand-brackets@npm:^2.1.4":
   version: 2.1.4
@@ -1455,20 +1461,20 @@ fsevents@^1.2.7:
 
 "fsevents@patch:fsevents@^1.2.7#builtin<compat/fsevents>":
   version: 1.2.13
-  resolution: "fsevents@patch:fsevents@npm%3A1.2.13#builtin<compat/fsevents>::version=1.2.13&hash=495457"
+  resolution: "fsevents@patch:fsevents@npm%3A1.2.13#builtin<compat/fsevents>::version=1.2.13&hash=87eb42"
   dependencies:
     bindings: ^1.5.0
     nan: ^2.12.1
-  checksum: 508a7e7e1e365236a7a0478392827145ba05c0181b1928b73b20c1a5212d15f6529735db897d617d7b0b051248c5720160f74c113bd727fc02de4f6cf885e1ff
+  checksum: 31c62373556f061f4b4c52ff61c91bc9080243ea074a38a81cf12c1f2c9098da731ea3d39705c805b738427e4284af6b8151efe65ce9ca6b11378d43f36db2c4
   languageName: node
   linkType: hard
 
 "fsevents@patch:fsevents@~2.1.2#builtin<compat/fsevents>":
   version: 2.1.3
-  resolution: "fsevents@patch:fsevents@npm%3A2.1.3#builtin<compat/fsevents>::version=2.1.3&hash=495457"
+  resolution: "fsevents@patch:fsevents@npm%3A2.1.3#builtin<compat/fsevents>::version=2.1.3&hash=87eb42"
   dependencies:
     node-gyp: latest
-  checksum: 0005677b72f38a129a3cbe8c3794bdc83081a2bec53dfc03b085c2e5e4ca7a33a861a779d623313652df89746d97f79d24e4fef3b101c11c39ce1ea8a9690e18
+  checksum: d8ae862048fc127cdbd00d02b2feb7c25946c3ce4cbc44e958134be87e239577a16dafafa1c270d010b8624e1b1e0372e23f7865c55c6f83e83fc9f68b0a30d2
   languageName: node
   linkType: hard
 
@@ -2522,16 +2528,6 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"other-example@workspace:*, other-example@workspace:other-example":
-  version: 0.0.0-use.local
-  resolution: "other-example@workspace:other-example"
-  dependencies:
-    example-1: "workspace:*"
-    example-2: "workspace:*"
-    lodash.omit: ^4.5.0
-  languageName: unknown
-  linkType: soft
-
 "p-limit@npm:^2.0.0":
   version: 2.3.0
   resolution: "p-limit@npm:2.3.0"
@@ -3352,6 +3348,15 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"testapp@workspace:app":
+  version: 0.0.0-use.local
+  resolution: "testapp@workspace:app"
+  dependencies:
+    "@example/example-1": "workspace:*"
+    "@packages/server": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
 "through2@npm:^2.0.0":
   version: 2.0.5
   resolution: "through2@npm:2.0.5"
@@ -3451,8 +3456,6 @@ fsevents@~2.1.2:
 "ts-pnp@npm:^1.1.6":
   version: 1.2.0
   resolution: "ts-pnp@npm:1.2.0"
-  peerDependencies:
-    typescript: "*"
   peerDependenciesMeta:
     typescript:
       optional: true
@@ -3572,11 +3575,11 @@ typescript@^4.0.2:
   linkType: hard
 
 "uri-js@npm:^4.2.2":
-  version: 4.2.2
-  resolution: "uri-js@npm:4.2.2"
+  version: 4.4.0
+  resolution: "uri-js@npm:4.4.0"
   dependencies:
     punycode: ^2.1.0
-  checksum: 651a49f55d6d65a15e589ed5ffa23bf99e495699e246c1c3fecbe6f232c675589fdae4e93a88608525ff130f39b6fb854c19982820813a2d94c005c11eafd7ed
+  checksum: 970577344101f43aa64d1e6ab7f78ff0371df0ff7731de66da268125c2703e7bf70693afd0b76c96325e247466b49b4b081d9f54339e9520b2b9c02b598542a6
   languageName: node
   linkType: hard
 
@@ -3719,9 +3722,6 @@ typescript@^4.0.2:
     terser-webpack-plugin: ^1.4.3
     watchpack: ^1.7.4
     webpack-sources: ^1.4.1
-  peerDependencies:
-    webpack-cli: "*"
-    webpack-command: "*"
   peerDependenciesMeta:
     webpack-cli:
       optional: true
